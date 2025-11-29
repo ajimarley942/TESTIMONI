@@ -59,14 +59,14 @@
         <div class="logo">MHA</div>
         <div>
           <div style="font-weight:800">TESTIMONI MHA</div>
-          <div class="muted" style="font-size:12px">Tagline singkat Anda</div>
+          <div class="muted" style="font-size:12px">Apa Yang Kamu Pikirkan</div>
         </div>
       </div>
       <nav>
         <a href="#home">Home</a>
         <a href="#fitur">Fitur</a>
         <a href="#tentang">Tentang</a>
-        <a href="https://wa.me/6281234567890" class="btn" target="_blank">
+        <a href="KOSONG" class="btn" target="_blank">
   Hubungi KAMI
 </a>
 
@@ -77,7 +77,7 @@
     <main>
       <section id="home" class="hero">
         <div>
-          <h1>Situs profesional untuk <span style="color:var(--accent)">bisnis & personal</span></h1>
+          <h1>Situs <span style="color:var(--accent)">Aman & Terpercaya</span></h1>
           <p>Buat landing page, portofolio, atau situs usaha kecil dengan cepat. Template ini responsive, ringan, dan mudah diubah — cocok untuk mulai online hari ini.</p>
           <div style="display:flex;gap:12px;align-items:center">
             <a class="btn" href="https://bitlife-online.io/" target="#kontak">Kunjungi Website</a>
@@ -102,11 +102,220 @@
       <section id="fitur">
         <div class="container card">
           <h2>Fitur Utama</h2>
-          <p class="muted">Ringkasan singkat fitur yang membuat situs Anda menonjol</p>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px">
-            <div class="feature"><strong>SEO dasar</strong><div class="muted">Meta & struktur yang ramah mesin pencari</div></div>
-            <div class="feature"><strong>Form kontak</strong><div class="muted">Kiriman email langsung (atau webhook)</div></div>
-            <div class="feature"><strong>Custom domain</strong><div class="muted">Siap pakai domain Anda sendiri</div></div>
+          <!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>PHISH.REPORT – URL Launcher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+        background: #07162e;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    h2 {
+        text-align: center;
+        color: #ff8800;
+        text-shadow: 0 0 10px #ff8800;
+    }
+    .card {
+        background: #0f274d;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #000;
+        margin-bottom: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 140px;
+        padding: 10px;
+        background: #0a1f3c;
+        border: 1px solid #334;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+    }
+    button, input[type="file"] {
+        background: #ff8800;
+        color: #000;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px;
+    }
+    button:hover, input[type="file"]:hover {
+        box-shadow: 0 0 12px #ff8800;
+        transform: scale(1.05);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    th {
+        background: #0c315f;
+        color: #ff8800;
+        padding: 10px;
+        text-shadow: 0 0 6px #ff8800;
+    }
+    td {
+        padding: 10px;
+        border-bottom: 1px solid #334;
+    }
+    .small-btn {
+        padding: 5px 8px;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+</style>
+</head>
+<body>
+
+<h2>🔎 PHISH.REPORT — URL Launcher UI (With TXT Import + Filter Phishing)</h2>
+
+<div class="card">
+    <h3>Upload TXT / Input Manual</h3>
+    <input type="file" id="fileInput" accept=".txt">
+    <textarea id="urlInput" placeholder="Atau paste URL di sini..."></textarea><br>
+    <button onclick="generate()">Generate Tabel</button>
+    <button onclick="openAll()">Open All</button>
+</div>
+
+<table id="urlTable">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Target URL</th>
+            <th>Phish.Report URL</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+
+// ==============================
+// FILTER FILE TXT PHISHING
+// ==============================
+
+// Ambil hanya URL valid (abaikan teks lain)
+function extractURL(line) {
+    line = line.trim();
+
+    // hapus label
+    line = line
+        .replace("URL PHISING:", "")
+        .replace("URL AMP:", "")
+        .replace("URL TUJUAN:", "")
+        .replace("URL DIRECT:", "")
+        .replace("KORBAN PHISING:", "")
+        .replace("PELAKU PHISING:", "")
+        .replace(/\t/g, " ")
+        .trim();
+
+    // valid hanya jika http / https
+    if (line.startsWith("http://") || line.startsWith("https://")) {
+        return line;
+    }
+    return null;
+}
+
+// normalisasi jadi phish.report
+function normalize(url) {
+    if (!url) return "";
+    url = url.trim();
+
+    if (url.startsWith("https://phish.report/")) {
+        return url;
+    }
+    return "https://phish.report/" + url;
+}
+
+// PROSES IMPORT TXT + FILTER
+document.getElementById("fileInput").addEventListener("change", function () {
+    let file = this.files[0];
+    let reader = new FileReader();
+
+    reader.onload = function (e) {
+        processTXT(e.target.result);
+    };
+
+    reader.readAsText(file);
+});
+
+// Proses TXT → ekstrak URL valid → masukkan textarea
+function processTXT(text) {
+    const lines = text.split("\n");
+
+    const urls = lines
+        .map(l => {
+            l = l.trim();
+            if (l.startsWith("URL PHISING:")) {
+                return l.replace("URL PHISING:", "").trim();
+            }
+            return null;
+        })
+        .filter(u => u !== null && u !== "");
+
+    document.getElementById("urlInput").value = urls.join("\n");
+
+    generate(); 
+} // otomatis update tabel
+
+
+// ==============================
+// GENERATE TABEL
+// ==============================
+
+function generate() {
+    const input = document.getElementById("urlInput").value.trim();
+    const lines = input.split("\n").filter(x => x.trim() !== "");
+
+    const tbody = document.querySelector("#urlTable tbody");
+    tbody.innerHTML = "";
+    let i = 1;
+
+    lines.forEach(line => {
+        const cleanTarget = line.replace("https://phish.report/", "");
+        const finalURL = normalize(line);
+
+        tbody.innerHTML += `
+        <tr>
+            <td>${i}</td>
+            <td>${cleanTarget}</td>
+            <td><a href="${finalURL}" target="_blank">${finalURL}</a></td>
+            <td>
+                <button class="small-btn" onclick="openURL('${finalURL}')">Open</button>
+                <button class="small-btn" onclick="copyURL('${finalURL}')">Copy</button>
+            </td>
+        </tr>
+        `;
+        i++;
+    });
+}
+
+function openURL(url) { window.open(url, "_blank"); }
+function copyURL(url) { navigator.clipboard.writeText(url); }
+function openAll() {
+    document.querySelectorAll("#urlTable a").forEach(a => window.open(a.href, "_blank"));
+}
+
+</script>
+
+</body>
+</html>
+
+
+</body>
+</html>
+
+
           </div>
         </div>
       </section>
@@ -180,3 +389,5 @@
   -->
 </body>
 </html>
+
+
